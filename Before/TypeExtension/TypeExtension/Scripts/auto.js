@@ -30,6 +30,21 @@ var Engine = /** @class */ (function () {
     };
     return Engine;
 }());
+var CustomEngine = /** @class */ (function () {
+    function CustomEngine() {
+    }
+    CustomEngine.prototype.start = function (callback) {
+        window.setTimeout(function () {
+            callback(true, 'Custom engine');
+        }, 1000);
+    };
+    CustomEngine.prototype.stop = function (callback) {
+        window.setTimeout(function () {
+            callback(true, 'Custom engine');
+        }, 1000);
+    };
+    return CustomEngine;
+}());
 var Accessory = /** @class */ (function () {
     function Accessory(accessoryNumber, title) {
         this.accessoryNumber = accessoryNumber;
@@ -38,11 +53,13 @@ var Accessory = /** @class */ (function () {
     return Accessory;
 }());
 var Auto = /** @class */ (function () {
-    function Auto(basePrice, engine, make, model) {
+    function Auto(basePrice, engine, make, model, year, state) {
         this.engine = engine;
         this.basePrice = basePrice;
         this.make = make;
         this.model = model;
+        this.year = year;
+        this.state = state;
     }
     Auto.prototype.calculateTotal = function () {
         var taxRate = .08;
@@ -99,11 +116,14 @@ var Truck = /** @class */ (function (_super) {
     return Truck;
 }(Auto));
 window.onload = function () {
-    var truck = new Truck(40000, new Engine(380, 'V10'), 'Chevy', 'Silverado', 'Long Bed', true);
-    console.log(truck.engine.engineType);
-    console.log(truck.calculateTotal());
-    truck.addAccessories(new Accessory(1, 'Sunroof'), new Accessory(2, 'Tinted Windows'), new Accessory(2, 'Towing Package'));
-    truck.engine.start(function (status, engineType) {
-        console.log(engineType + " was started.");
-    });
+    // var truck = new Truck(40000, new Engine(380, 'V10'), 'Chevy', 'Silverado', 'Long Bed', true);
+    // console.log(truck.engine.engineType);
+    // console.log(truck.calculateTotal());
+    // truck.addAccessories(new Accessory(1, 'Sunroof'), new Accessory(2, 'Tinted Windows'), new Accessory(2, 'Towing Package'));
+    // truck.engine.start((status: boolean, engineType: string) => {
+    //     console.log(`${engineType} was started.`);
+    // });
+    var auto = new Auto(40000, new Engine(200, 'V6'), 'MakeA', 'ModelA', 2019, 'NC');
+    var myEngine = auto.engine;
+    alert(myEngine.horsePower.toString());
 };
