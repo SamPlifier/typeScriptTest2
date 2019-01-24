@@ -53,13 +53,13 @@ var Accessory = /** @class */ (function () {
     return Accessory;
 }());
 var Auto = /** @class */ (function () {
-    function Auto(basePrice, engine, make, model, year, state) {
-        this.engine = engine;
-        this.basePrice = basePrice;
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.state = state;
+    function Auto(options) {
+        this.engine = options.engine;
+        this.basePrice = options.basePrice;
+        this.make = options.make;
+        this.model = options.model;
+        this.year = options.year;
+        this.state = options.state;
     }
     Auto.prototype.calculateTotal = function () {
         var taxRate = .08;
@@ -107,23 +107,24 @@ var Auto = /** @class */ (function () {
 }());
 var Truck = /** @class */ (function (_super) {
     __extends(Truck, _super);
-    function Truck(basePrice, engine, make, model, bedLength, fourByFour) {
-        var _this = _super.call(this, basePrice, engine, make, model) || this;
-        _this.bedLength = bedLength;
-        _this.fourByFour = fourByFour;
+    function Truck(options) {
+        var _this = _super.call(this, options) || this;
+        _this.bedLength = options.bedLength;
+        _this.fourByFour = options.fourByFour;
         return _this;
     }
     return Truck;
 }(Auto));
 window.onload = function () {
-    // var truck = new Truck(40000, new Engine(380, 'V10'), 'Chevy', 'Silverado', 'Long Bed', true);
-    // console.log(truck.engine.engineType);
-    // console.log(truck.calculateTotal());
-    // truck.addAccessories(new Accessory(1, 'Sunroof'), new Accessory(2, 'Tinted Windows'), new Accessory(2, 'Towing Package'));
-    // truck.engine.start((status: boolean, engineType: string) => {
-    //     console.log(`${engineType} was started.`);
-    // });
-    var auto = new Auto(40000, new Engine(200, 'V6'), 'MakeA', 'ModelA', 2019, 'NC');
-    var myEngine = auto.engine;
-    alert(myEngine.horsePower.toString());
+    var truck = new Truck({
+        engine: new Engine(250, 'V6'),
+        basePrice: 45000,
+        state: 'NC',
+        make: 'Ford',
+        model: 'F-150',
+        year: 2019,
+        bedLength: 'Short Bed',
+        fourByFour: true
+    });
+    console.log(truck);
 };

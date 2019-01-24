@@ -2,7 +2,18 @@ interface IEngine {
     start(callback: (startStatus: boolean, engineType: string) => void): void;
     stop(callback: (stopStatus: boolean, engineType: string) => void): void;
 }
-
+interface IAutoOptions {
+    basePrice: number;
+    engine: IEngine;
+    state: string;
+    make: string;
+    model: string;
+    year: number;
+}
+interface ITruckOptions extends IAutoOptions {
+    bedLength: string;
+    fourByFour: boolean;
+}
 class Engine implements IEngine {
     constructor(public horsePower: number, public engineType: string) { }
 
@@ -38,19 +49,19 @@ class Accessory {
 class Auto {
     private _basePrice: number;
     private _engine: IEngine;
-    state?: string;
+    state: string;
     make: string;
     model: string;
+    year: number;
     accessoryList: string;
-    year?: number;
 
-    constructor(basePrice: number, engine: IEngine, make: string, model: string, year?: number, state?: string) {
-        this.engine = engine;
-        this.basePrice = basePrice;
-        this.make = make;
-        this.model = model;
-        this.year = year;
-        this.state = state;
+    constructor(options: IAutoOptions) {
+        this.engine = options.engine;
+        this.basePrice = options.basePrice;
+        this.make = options.make;
+        this.model = options.model;
+        this.year = options.year;
+        this.state = options.state;
     }
 
     calculateTotal(): number {
@@ -93,23 +104,24 @@ class Truck extends Auto {
     bedLength: string;
     fourByFour: boolean;
 
-    constructor(basePrice: number, engine: Engine, make: string, model: string, bedLength: string, fourByFour: boolean) {
-        super(basePrice, engine, make, model);
-        this.bedLength = bedLength;
-        this.fourByFour = fourByFour;
+    constructor(options: ITruckOptions) {
+        super(options);
+        this.bedLength = options.bedLength;
+        this.fourByFour = options.fourByFour;
     }
 }
 
 window.onload = function() {
-    // var truck = new Truck(40000, new Engine(380, 'V10'), 'Chevy', 'Silverado', 'Long Bed', true);
-    // console.log(truck.engine.engineType);
-    // console.log(truck.calculateTotal());
-    // truck.addAccessories(new Accessory(1, 'Sunroof'), new Accessory(2, 'Tinted Windows'), new Accessory(2, 'Towing Package'));
-    // truck.engine.start((status: boolean, engineType: string) => {
-    //     console.log(`${engineType} was started.`);
-    // });
-    var auto = new Auto(40000, new Engine(200, 'V6'), 'MakeA', 'ModelA', 2019, 'NC');
-    var myEngine = <Engine>auto.engine;
-    alert(myEngine.horsePower.toString());
+    var truck = new Truck({
+        engine: new Engine(250, 'V6'),
+        basePrice: 45000,
+        state: 'NC',
+        make: 'Ford',
+        model: 'F-150',
+        year: 2019,
+        bedLength: 'Short Bed',
+        fourByFour: true
+    });
+    console.log(truck);
 
 };
